@@ -1,0 +1,55 @@
+
+cqlsh> CREATE KEYSPACE Library WITH REPLICATION = {'class':'SimpleStrategy','replication_factor':1};
+cqlsh> DESCRIBE KEYSPACES;
+cqlsh> USE Library;
+cqlsh:library> CREATE TABLE library_book(counter_value counter, book_name varchar, stud_name varchar,book_id int,stud_id int,date_of_issue timestamp,PRIMARY KEY(stud_id,book_name,stud_name,book_id,date_of_issue));
+cqlsh:library> update library_book set counter_value = counter_value + 1 where book_name='BDA' and stud_name='Suraj Perdoor' and book_id = 101 and stud_id = 112 and date_of_issue='2021-01-01';
+cqlsh:library> update library_book set counter_value = counter_value + 1 where book_name='AI' and stud_name='Smitha' and book_id = 104 and stud_id = 111 and date_of_issue='2021-01-04';
+cqlsh:library> update library_book set counter_value = counter_value + 1 where book_name='ML' and stud_name='Asha' and book_id = 103 and stud_id = 110 and date_of_issue='2021-01-03';
+cqlsh:library> update library_book set counter_value = counter_value + 1 where book_name='CN' and stud_name='Kiran' and book_id = 102 and stud_id = 113 and date_of_issue='2021-01-02';
+cqlsh:library> select * from library_book;
+
+ stud_id | book_name | stud_name   | book_id | date_of_issue                   | counter_value
+---------+-----------+-------------+---------+---------------------------------+---------------
+     110 |        ML |        Asha |     103 | 2021-01-02 18:30:00.000000+0000 |             1
+     111 |        AI |      Smitha |     104 | 2021-01-03 18:30:00.000000+0000 |             1
+     113 |        CN |       Kiran |     102 | 2021-01-01 18:30:00.000000+0000 |             1
+     112 |       BDA | Suraj Perdoor|     101 | 2020-12-31 18:30:00.000000+0000 |             1
+
+(4 rows)
+cqlsh:library> update library_book set counter_value = counter_value + 1 where book_name='BDA' and stud_name='Sumanth k V' and book_id = 101 and stud_id = 112 and date_of_issue='2021-01-01';
+cqlsh:library> select * from library_book;
+
+ stud_id | book_name | stud_name   | book_id | date_of_issue                   | counter_value
+---------+-----------+-------------+---------+---------------------------------+---------------
+     110 |        ML |        Asha |     103 | 2021-01-02 18:30:00.000000+0000 |             1
+     111 |        AI |      Smitha |     104 | 2021-01-03 18:30:00.000000+0000 |             1
+     113 |        CN |       Kiran |     102 | 2021-01-01 18:30:00.000000+0000 |             1
+     112 |       BDA | Suraj Perdoor |     101 | 2020-12-31 18:30:00.000000+0000 |             2
+
+(4 rows)
+cqlsh:library> select * from library_book where book_name='BDA' and stud_name='Sumanth k V' and book_id = 101 and stud_id = 112 and date_of_issue='2021-01-01';
+
+ stud_id | book_name | stud_name   | book_id | date_of_issue                   | counter_value
+---------+-----------+-------------+---------+---------------------------------+---------------
+     112 |       BDA | Suraj Perdoor |     101 | 2020-12-31 18:30:00.000000+0000 |             2
+
+(1 rows)
+cqlsh:library> copy library_book(stud_id,book_name,stud_name,book_id,date_of_issue) to 'C:\Users\suman\Downloads\cassandra.csv';
+Using 11 child processes
+
+Starting copy of library.library_book with columns [stud_id, book_name, stud_name, book_id, date_of_issue].
+Processed: 4 rows; Rate:       4 rows/s; Avg. rate:       3 rows/s
+4 rows exported to 1 files in 1.395 seconds.
+cqlsh:library> create table col_fam(identifier int,username text,first_name text,last_name text, PRIMARY KEY(identifier,username,first_name,last_name));
+
+cqlsh:library> select * from col_fam;
+
+ identifier | username   | first_name | last_name
+------------+------------+------------+-----------
+        104 |   SmithaKH |     Smitha |        KH
+        102 |    kiranDV |      kiran |        DV
+        101 |  Suraj P   |    suraj   |        P
+        103 | AshaBhosle |       Asha |    Bhosle
+
+(4 rows)
